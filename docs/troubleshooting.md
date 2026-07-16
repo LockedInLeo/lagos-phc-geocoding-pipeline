@@ -1,0 +1,94 @@
+ # Problems encountered and solutions
+
+ Debugging Diary – File Paths and Working Directories in Jupyter
+
+Date: July 8, 2026
+
+**Problem**
+
+While working on my Google Geocoding project, I tried to load my Excel dataset using relative path:
+
+Import os
+
+Import pandas as pd
+
+path = os.path.join(
+
+&#x20;   "data",
+
+&#x20;   "raw",
+
+&#x20;   "Primary Health Care Centers in Lagos State.xlsx"
+
+)
+
+
+
+df = pd.read\_excel(path)
+
+Instead of loading the file, Python raised a FileNotFoundError.
+
+**Cause**
+
+I discovered that the problem was not with the dataset itself but with my current working directory.
+
+The thing is I had originally created my notebook from the data folder and I did not know that Python always interprets relative paths from the folder where the notebook is running, not necessarily from the project root.
+
+As a result, when I wrote:
+
+***data/raw/Primary Health Care Centers in Lagos State.xlsx***
+
+Python searched for a data folder inside my current directory instead of the project's data folder.
+
+Solution
+
+I moved my notebook to the proper project location (notebooks folder) and used the correct relative path:
+
+path = "../data/raw/Primary Health Care Centers in Lagos State.xlsx"
+
+
+
+df = pd.read\_excel(path)
+
+The dataset loaded successfully.
+
+I could have used absolute Windows path works, but relative paths are preferred because they make the project portable and easier to share.
+
+Lessons Learned
+
+•	A notebook's location determines how relative paths are interpreted.
+
+•	Keep datasets inside the data folder and notebooks inside the notebooks folder.
+
+•	In future projects, use a config.py file to centralize project paths instead of hardcoding them throughout notebooks.
+
+A very important lesson
+
+You'll use relative paths like this in almost every data science and geospatial project.
+
+•	. = current folder 
+
+•	.. = parent folder (one level up) 
+
+•	../.. = two levels up 
+
+For example:
+
+\# Current folder
+
+"./myfile.csv"
+
+
+
+\# One level up
+
+"../data/raw/file.csv"
+
+
+
+\# Two levels up
+
+"../../datasets/file.csv"
+
+
+
